@@ -6,7 +6,19 @@
         xmlns:local="clr-namespace:Mr"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <ItemsControl ItemsSource="{Binding Items}" Width="{Binding Path=FieldWidht}" Height="{Binding Path=FieldHeight}">
+        <!-- ItemsPanelTemplate -->
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <UniformGrid Columns="{Binding Path=Width}" Rows="{Binding Path=Height}" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+
+        <!-- ItemTemplate -->
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Button Content="{Binding Path=Value.Symbol}" Command="{Binding Path=Value.Command_select_model}" />
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
 </Window>

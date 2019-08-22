@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Mr.Game;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Mr
 {
@@ -23,6 +11,12 @@ namespace Mr
         public MainWindow()
         {
             InitializeComponent();
+            MineField vm = new MineField(50, 30, 1000);
+
+            this.Width = vm.FieldWidht + 50;
+            this.Height = vm.FieldHeight + 60;
+
+            this.DataContext = vm;
         }
     }
 }
