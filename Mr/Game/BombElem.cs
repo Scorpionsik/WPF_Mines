@@ -8,9 +8,6 @@ namespace Mr.Game
 {
     public class BombElem : BaseElem
     {
-        public BombElem() : base()
-        {
-            this.Symbol = '*';
-        }
+        public BombElem(Coord coordinats) : base('*', coordinats) { }
     }
 }

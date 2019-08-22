@@ -11,7 +11,7 @@ namespace Mr
         public MainWindow()
         {
             InitializeComponent();
-            MineField vm = new MineField(50, 30, 1000);
+            MineField vm = new MineField(30, 20, 100);
 
             this.Width = vm.FieldWidht + 50;
             this.Height = vm.FieldHeight + 60;

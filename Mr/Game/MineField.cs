@@ -12,7 +12,7 @@ namespace Mr.Game
         public int Height { get; private set; }
         public int Bombs { get; private set; }
 
-        public int SizeButton {
+        public static int SizeButton {
             get
             {
                 return 25;
@@ -36,54 +36,46 @@ namespace Mr.Game
         }
 
 
-        public Dictionary<Coord,BaseElem> Items { get; private set; }
-        public Dictionary<BaseElem, Coord> InverseItems { get; private set; }
+        public ListExt<BaseElem> Items { get; private set; }
 
         public MineField(int width, int height, int bombs)
         {
             this.Width = width;
             this.Height = height;
             this.Bombs = bombs;
-            this.Items = new Dictionary<Coord, BaseElem>();
-            this.InverseItems = new Dictionary<BaseElem, Coord>();
-            for(int h = 0; h < this.Height; h++)
-            {
-                for(int w = 0; w < this.Width; w++)
-                {
-                    //this.Items.Add(new Coord(w,h), new EmptyElem() { Event_select_model = new System.Action<SimpleModel>(this.Activate) });
-                    this.AddElement(new Coord(w, h), new EmptyElem());
-                }
-            }
+            this.Items = new ListExt<BaseElem>();
 
             List<Coord> tmp_bomb = new List<Coord>();
-            for(int i = 0; i < this.Bombs; i++)
+            for (int i = 0; i < this.Bombs; i++)
             {
                 Coord gen = Coord.GetRandomCoord(this.Width, this.Height);
                 if (tmp_bomb.Contains(gen)) i--;
                 else tmp_bomb.Add(gen);
             }
 
-            foreach(Coord c in tmp_bomb)
+            for (int h = 0; h < this.Height; h++)
             {
-                //this.Items[c] = new BombElem() { Event_select_model = new System.Action<SimpleModel>(this.Activate)};
-                this.AddElement(c, new BombElem());
+                for(int w = 0; w < this.Width; w++)
+                {
+                    Coord tmp_coord = new Coord(w, h);
+                    if (tmp_bomb.Contains(tmp_coord))
+                    {
+                        this.AddElement(new BombElem(tmp_coord));
+                    }
+                    else this.AddElement(new EmptyElem(tmp_coord));
+                }
             }
         }
 
-        private void AddElement(Coord coord, BaseElem elem)
+        private void AddElement(BaseElem elem)
         {
             elem.Event_select_model = new System.Action<SimpleModel>(this.Activate);
-            if (this.Items.ContainsKey(coord))
-            {
-                this.InverseItems.Remove(this.Items[coord]);
-                this.Items[coord] = elem;
-                this.InverseItems.Add(elem, coord);
-            }
-            else
-            {
-                this.Items.Add(coord, elem);
-                this.InverseItems.Add(elem, coord);
-            }
+            this.Items.Add(elem);
+        }
+
+        private int Decrypt(Coord c)
+        {
+            return c.x + c.y * this.Width;
         }
 
         public void Activate(SimpleModel m)
@@ -91,25 +83,26 @@ namespace Mr.Game
             if (m is EmptyElem empty)
             {
                 int count_bombs = 0;
-                List<Coord> tmp_fields = new List<Coord>();
+                List<int> tmp_fields = new List<int>();
 
-                foreach(Coord c in this.InverseItems[empty].MaskResult())
+                foreach(Coord c in empty.Coordinats.MaskResult())
                 {
-                    if (this.Items.ContainsKey(c))
+                    int tmp = this.Decrypt(c);
+                    if (tmp >= 0 && tmp < this.Items.Count)
                     {
-                        tmp_fields.Add(c);
+                        tmp_fields.Add(tmp);
                     }
                 }
 
 
-                foreach(Coord c in tmp_fields)
+                foreach(int c in tmp_fields)
                 {
                     if (this.Items[c] is BombElem) count_bombs++;
                 }
 
                 if (count_bombs == 0)
                 {
-                    foreach (Coord c in tmp_fields)
+                    foreach (int c in tmp_fields)
                     {
                         if (this.Items[c].Status != Enums.ElemStatus.Activate)
                         {

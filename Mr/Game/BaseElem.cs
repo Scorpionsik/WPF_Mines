@@ -6,6 +6,8 @@ namespace Mr.Game
 {
     public abstract class BaseElem : SimpleModel
     {
+        public Coord Coordinats { get; private set; }
+
         private ElemStatus status;
         public ElemStatus Status
         {
@@ -41,8 +43,10 @@ namespace Mr.Game
             }
         }
 
-        public BaseElem()
+        public BaseElem(char symbol, Coord coordinats)
         {
+            this.symbol = symbol;
+            this.Coordinats = coordinats;
             this.status = ElemStatus.Default;
         }
 

@@ -8,9 +8,6 @@ namespace Mr.Game
 {
     public class EmptyElem : BaseElem
     {
-        public EmptyElem() : base()
-        {
-            this.Symbol = '-';
-        }
+        public EmptyElem(Coord coordinats) : base('-', coordinats) { }
     }
 }
