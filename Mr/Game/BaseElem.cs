@@ -60,7 +60,7 @@ namespace Mr.Game
                 return new RelayCommand(obj =>
                 {
                     this.Status = ElemStatus.Activate;
-                    base.Command_select_model?.Execute(this);
+                    base.Command_select_model.Execute(this);
                 },
                 (obj) => this.Status != ElemStatus.Activate
                 );
