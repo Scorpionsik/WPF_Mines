@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mr.Game
+namespace Mr.Enums
 {
-    public class BombElem : BaseElem
+    public enum GameStatus
     {
-        public BombElem(Coord c) : base('*',c)
-        {
-
-        }
+        InGame,
+        Win,
+        Lose
     }
 }
