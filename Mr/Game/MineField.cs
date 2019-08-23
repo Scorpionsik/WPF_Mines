@@ -94,7 +94,6 @@ namespace Mr.Game
 
         public MineField(int width, int height, int bombs)
         {
-            
             this.Width = width;
             this.Height = height;
             this.Bombs = bombs;
@@ -121,6 +120,7 @@ namespace Mr.Game
 
         private async void GenegateField()
         {
+            this.Items = new ListExt<BaseElem>();
             List<int> tmp_count = new List<int>();
             await Task.Run(() => 
             {
@@ -160,7 +160,7 @@ namespace Mr.Game
                     App.Current.Dispatcher.Invoke((Action)delegate
                     {
                         int index = i * ((this.Width * this.Height) / this.Bombs);
-                        if (index >= (this.Width * this.Height)) index = (this.Width * this.Height) - 1;
+                        if (index >= (this.Width * this.Height) && index < 0) index = (this.Width * this.Height) - 1;
                         this.Items[tmp_count[index]] = this.BindElem(new BombElem(this.Items[tmp_count[index]].Coordinats));
                     });
                 }
@@ -307,7 +307,6 @@ namespace Mr.Game
                         this.Status = GameStatus.InGame;
                         this.WinScore = 0;
                         this.NonActiveElems = this.Width * this.Height;
-                        this.Items = new ListExt<BaseElem>();
                         this.marks = new List<Coord>();
                         this.OnPropertyChanged("Count");
                     });
